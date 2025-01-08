@@ -6,15 +6,12 @@ const bloodInventrySchema = new  mongoose.Schema({
         type:String,
         required:true
     },
-    type:{
-        type:String,
-        required:true
-    },
+
     quantity:{
-        type:String,
+        type:Number,
         required:true
     }
-     ,
+    ,
      donners:[
         {
             type:mongoose.Schema.Types.ObjectId,
@@ -25,4 +22,4 @@ const bloodInventrySchema = new  mongoose.Schema({
 },{
     timestamps:true
 }) 
-const BloodInventry = mongoose.model("BloodInventry",bloodInventrySchema)
+export const BloodInventry = mongoose.model("BloodInventry",bloodInventrySchema)
