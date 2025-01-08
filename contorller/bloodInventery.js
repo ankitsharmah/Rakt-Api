@@ -1,4 +1,4 @@
-import { BloodInventry } from "../models/bloodInventryModel"
+import { BloodInventry } from "../models/bloodInventryModel.js"
 
 
 export const addBlood=async (req,res)=>{
@@ -50,8 +50,9 @@ export const addBloodGroup = async (req,res)=>{
     try {
         const {bloodGroup} = req.body;
         const blood = await BloodInventry.create({
-            blood,
-            donners:[]
+            bloodGroup,
+            quantity:0,
+            // donners:[]
         })
         if(blood){
             return res.status(200).json({
@@ -64,7 +65,7 @@ export const addBloodGroup = async (req,res)=>{
             message:"error while adding blood group",
             success:false
         })
-        
+
     } catch (error) {
         console.log(error);
     }
