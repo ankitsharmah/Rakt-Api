@@ -5,8 +5,7 @@ import dotenv from 'dotenv';
 
 import { app, server } from './socket/socket.js';
 import connectDb from './config/db.js';
-import {  sendOtp, signup } from './contorller/userController.js';
-
+import AuthRoutes from "./routes/AuthRoutes.js"
 dotenv.config();
 
 // Middleware to parse JSON bodies
@@ -24,7 +23,8 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.post("/add",sendOtp)
+app.use("/api/v1/auth",AuthRoutes)
+
 
 app.get("/",(req,res)=>{
     return res.status(200).json({

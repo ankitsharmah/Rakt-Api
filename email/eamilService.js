@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { Otp } from '../models/otpsModel.js';
 
 // Create a transporter for SMTP configuration
 
@@ -33,6 +34,12 @@ export const sendOtpEmail = async (email, otp) => {
         let info = await transporter.sendMail(mailOptions);
 
         console.log('OTP sent successfully:', info);
+
+        if(info){
+            await Otp.create({email,otp});
+        }
+
+
         return info;
     } catch (e) {
         console.log(`Error sending OTP: ${e.message}`);

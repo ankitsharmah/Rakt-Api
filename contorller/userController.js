@@ -3,6 +3,7 @@ import bcryptjs from "bcryptjs";
 import crypto from 'crypto'
 import {sendOtpEmail} from '../email/eamilService.js'
 import { Otp } from "../models/otpsModel.js";
+import jsonwebtoken from "jsonwebtoken";
 
 
 export const signup= async(req,res)=>{
@@ -23,10 +24,18 @@ export const signup= async(req,res)=>{
 
 
         await User.create({fullName,email,
-            password:salted
-            ,role,bloodGroup,contact,address,lastDonationDate})
+            password:salted,
+            role,
+            bloodGroup,
+            contact,
+            isAuthenticated:false
+            ,address,
+            lastDonationDate})
+
+            sendOtp(email);
+
         return res.status(200).json({
-            message: "Registered successfully",
+            message: "Registered successfully and otp sent",
             success: true
         });
 
@@ -40,7 +49,7 @@ export const verifyAccount = async (req,res)=>{
     try {
         const {otp,email} = req.body;
 
-        const received = await Otp.findOne({otp:otp});
+        const received = await Otp.findOne({otp});
 
         if(!received){
             return res.status(400).json({
@@ -56,14 +65,14 @@ export const verifyAccount = async (req,res)=>{
             })
         }
 
-        const user = await User.findOne({email:email});
+        const user = await User.findOne({email});
 
                 user.isAuthenticated=true;
 
                 await user.save();
 
                 await Otp.findByIdAndDelete(received._id);
-                
+
             return res.status(200).json({
                 message:"user authenticated successfully",
                 success:true
@@ -81,18 +90,57 @@ function generateOtp() {
   }
   
 
-export const sendOtp=(req, res) =>{
-  const { email } = req.body;
+function sendOtp(email){
+  
   const otp = generateOtp();
 
-  
+  console.log(email);
   sendOtpEmail(email, otp)
-    .then(() => {
-      res.status(200).json({ message: 'OTP sent to your email!' });
-    })
-    .catch((err) => {
-      res.status(500).json({ message: 'Failed to send OTP', error: err });
-    });
+   
+    
 }
 
+export const login = async (req,res)=>{
+        try {
+            
+            const {email,password} = req.body ;
+
+            if(!email || !password){
+                return res.status(201).json({
+                    message:"something is missing",
+                    success:false
+                })
+            }
+
+            const user = await User.findOne({email});
+
+            if(!user){
+                return res.status(400).json({
+                    message:"user not found",
+                    success:false
+                })
+            }
+
+            const isPasswordValid = await bcryptjs.compare(password, user.password);
+            if (!isPasswordValid) {
+                return res.status(401).json({
+                    message: "Wrong password",
+                    success: false
+                });
+            }
+    
+            const tokenData = { userId: user._id };
+            const token = jsonwebtoken.sign(tokenData, process.env.SECRET_KEY, { expiresIn: '1d' });
+    
+            return res.status(200).json({
+                auth_token: token,
+                user: user,
+                success: true
+            }); 
+
+
+        } catch (error) {
+            console.log(error);
+        }
+}
 
