@@ -19,7 +19,12 @@ const requestSchema = new mongoose.Schema({
     status:{
         type:String,
         enum:['Pending','Accepted','Declined','Completed']
+    },
+    bloodBank:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"BloodBank"
     }
+    
    
       
 },{timestamps:true})
