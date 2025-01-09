@@ -11,18 +11,27 @@ const campSchema = new Schema({
     type: String,
     required: true
   },
-  date: {
+  startDate: {
     type: String,
     required: true
   },
-  time: {
+  endDate: {
+    type: String,
+    required: true
+  },
+  startTime: {
+    type: String,
+    required: true
+  },
+  endTime: {
     type: String,
     required: true
   },
   organizer: {
-    type: String,
-    required: true
+    type: mongoose.Schema.Types.ObjectId,
+    ref:"BloodBank"
   },
+  
   participants: [{
     type: mongoose.Schema.Types.ObjectId,
     ref:"User"
@@ -31,4 +40,4 @@ const campSchema = new Schema({
   timestamps: true
 });
 
-const Camp = mongoose.model('Camp', campSchema);
+export const Camp = mongoose.model('Camp', campSchema);

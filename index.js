@@ -9,6 +9,7 @@ import AuthRoutes from "./routes/AuthRoutes.js"
 import bloodRoutes from "./routes/bloodRoutes.js" 
 import bloodBankRoutes from "./routes/bloodBankRoutes.js"
 import requestsRoute from "./routes/requestsRoute.js"
+import bloodCampRoute from "./routes/bloodCampRoute.js"
 
 dotenv.config();
 
@@ -31,7 +32,7 @@ app.use("/api/v1/auth",AuthRoutes)
 app.use("/api/v1/blood",bloodRoutes)
 app.use("/api/v1/blood-bank",bloodBankRoutes)
 app.use("/api/v1/requets",requestsRoute)
-
+app.use("/api/v1/camp",bloodCampRoute)
 
 app.get("/",(req,res)=>{
     return res.status(200).json({
