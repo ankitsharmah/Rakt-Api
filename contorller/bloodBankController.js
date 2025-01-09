@@ -21,3 +21,11 @@ export const saveBloodBank = async (req,res) => {
   }
 };
 
+export const allBloodBank = async(req,res)=>{
+        const response =await BloodBank.find();
+        return res.status(200).json({
+            banks:response,
+            success:true
+        })
+}
+
