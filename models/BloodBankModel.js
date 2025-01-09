@@ -47,7 +47,8 @@ const bloodBankSchema = new mongoose.Schema({
   admin:{
     type:mongoose.Schema.Types.ObjectId,
     ref:"User"
-  }
+  },
+
 }, { timestamps: true });
 
 const BloodBank = mongoose.model('BloodBank', bloodBankSchema);
