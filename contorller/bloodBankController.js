@@ -29,3 +29,27 @@ export const allBloodBank = async(req,res)=>{
         })
 }
 
+export const bloodBankById= async (req,res)=>{
+  try {
+      const bankId =  req.params.id;
+
+      const bank = await BloodBank.findById(bankId);
+
+      if(!bank){
+        return res.status(201).json({
+          message:"blood bank not found",
+          success:false
+        })
+      }
+
+      return res.status(200).json({
+        bank:bank,
+        success:true
+      })
+
+      
+  } catch (error) {
+    console.log(error)
+  }
+}
+

@@ -26,7 +26,7 @@ const corsOptions = {
     },
     credentials: true, // This allows cookies and headers (like authorization) to be sent
 };
-app.use(cors(corsOptions));
+app.use(cors("*"));
 
 app.use("/api/v1/auth",AuthRoutes)
 app.use("/api/v1/blood",bloodRoutes)
