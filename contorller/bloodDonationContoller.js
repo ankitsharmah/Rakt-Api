@@ -1,3 +1,4 @@
+import BloodBank from "../models/BloodBankModel.js";
 import { Camp } from "../models/donationModel.js";
 
 export const donationCamp = async (req,res)=>{
@@ -50,11 +51,22 @@ export const addParticipents=async (req,res)=>{
     }
 }
 
-// export const campColectionData=async (req,res)=>{
-//     try {
-//         const {bloodGroup,type,quant} = 
+export const getBloodCamp=async (req,res)=>{
+    try {
         
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
+        const data = await Camp.find();
+
+        if(!data){return res.status(201).json({
+            message:"no blood camp found",
+            success:false
+        })}
+
+        return res.status(200).json({
+            camps:data,
+            success:true
+        })
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
