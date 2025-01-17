@@ -45,7 +45,7 @@ export const signup= async(req,res)=>{
 }
 
 export const verifyAccount = async (req,res)=>{
-
+        console.log(req.body)
     try {
         const {otp,email} = req.body;
 
